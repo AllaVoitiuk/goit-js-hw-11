@@ -58,17 +58,17 @@ async function getGallery(inputValue){
 
   console.log("getGalery(), counter = " + counter);
   let markupDiv = "";
-  
-  if(inputValue){
+  try {
+  // if(inputValue){
 
     await getData(inputValue)
-    .then(response => {
+    // .then(response => {
 
-      if (response.data.hits.length === 0) {
+      // if (response.data.hits.length === 0) {
           
-        Notiflix.Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
-      }
-      else{
+      //   Notiflix.Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
+      // }
+      // else{
         
         console.log(response.data);        
         
@@ -117,9 +117,15 @@ async function getGallery(inputValue){
           Notiflix.Notify.info(`We're sorry, but you've reached the end of search results.`);
           console.log(`We're sorry, but you've reached the end of search results.`)
         }
-      }
-    })    
-  }  
+      // }
+    // })    
+  }  catch (response){
+    if (response.data.hits.length === 0) {
+          
+      Notiflix.Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
+    }
+  } 
+
   lightbox.refresh();
 }
 

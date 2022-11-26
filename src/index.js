@@ -61,7 +61,7 @@ async function getGallery(inputValue){
   try {
   // if(inputValue){
 
-    await getData(inputValue)
+  const response = await getData(inputValue);
     // .then(response => {
 
       // if (response.data.hits.length === 0) {
@@ -72,7 +72,7 @@ async function getGallery(inputValue){
         
         console.log(response.data);        
         
-        response.data.hits.forEach(element => {
+        response.data.hits.forEach(element => {          
           
           markupDiv += `<a class="gallery__item" href=${element.largeImageURL}>
           <div class="photo-card">          
@@ -93,10 +93,23 @@ async function getGallery(inputValue){
           </div>
           </div>
           </a>`;
-                          
+          
           //console.log(element.webformatURL);
         });      
         document.querySelector('.gallery').innerHTML += markupDiv;
+
+        if(counter>1)
+        {
+          const { height: cardHeight } = document
+          .querySelector(".gallery")
+          .firstElementChild.getBoundingClientRect();
+
+          window.scrollBy({
+            top: cardHeight*2,
+            behavior: "smooth",
+          });
+        }
+
         counter+=1;
 
         totalHits = response.data.totalHits;
@@ -130,8 +143,7 @@ async function getGallery(inputValue){
 }
 
 function changeGallery(event){
-  getGallery(inputValue);
- 
+  getGallery(inputValue);  
 }
 
 // window.addEventListener('scroll', () => {
@@ -142,14 +154,4 @@ function changeGallery(event){
 // })
 
 refs.loadBtn.addEventListener('click', changeGallery);
-
-const { height: cardHeight } = document
-  .querySelector(".gallery")
-  .firstElementChild.getBoundingClientRect();
-
-window.scrollBy({
-  top: cardHeight * 2,
-  behavior: "smooth",
-});
-
 
